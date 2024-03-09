@@ -1,35 +1,21 @@
-import { useState } from 'react';
-import './App.css';
-import Cards from './components/Cards';
-import Nav from './components/Nav';
+const express = require("express");
+const router = require("../src/routes");
+const server = express();
 
-const URL='https://rickandmortyapi.com/api/character/'
-    
-function App() {
 
-  const [characters, setCharacters] = useState([]);
-  
-  const onSearch = (id) => {
-    fetch(`${URL}${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setCharacters([...characters, data]);
-      });
-  };
 
-  const onClose = (id) => {
-    const charactersFilter = characters.filter((character) => character.id !== id);
-    setCharacters(charactersFilter);
-  }
-  
-  // console.log(characters);
-   return (
-     <div className="App">
-       <h1 style={{color: "aqua",}}> Rick and Morty Characters </h1>
-       <Nav onSearch={onSearch}/>
-       <Cards characters={characters} onClose={ onClose} />
-     </div>
-   );
-}
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
 
-export default App;
+server.use(express.json());
+server.use("/rickandmorty", router);
+
+module.exports = server;

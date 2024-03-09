@@ -1,5 +1,6 @@
-module.exports = [
-  { email: 'hola@hola.co',
-  password: '123456',
-  }
-];
+const users = [{
+  email: 'jram828@yahoo.com',
+  password: 'Jram0828'
+}];
+
+module.exports = users;
